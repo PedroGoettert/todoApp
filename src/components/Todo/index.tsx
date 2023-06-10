@@ -1,6 +1,6 @@
 import { Circle, CheckCircle2, Trash2 } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
+import { View, TouchableOpacity, Text, Alert } from 'react-native'
 import { styles } from './style'
 
 type Props = {
@@ -12,9 +12,43 @@ type Props = {
 export function Todo({ textTodo, onRemove, onCheck }: Props) {
   const [check, setCheck] = useState(false)
 
-  function handleResult() {
+  function checkTest() {
     onCheck()
     setCheck(true)
+  }
+
+  function handleResult() {
+    Alert.alert(
+      'Deseja Concluir a Tarefa?',
+      'Depois de concluir, não conseguira reverter.',
+      [
+        {
+          text: 'Sim',
+          onPress: () => checkTest(),
+        },
+        {
+          text: 'Não',
+          style: 'cancel',
+        },
+      ],
+    )
+  }
+
+  function removeTodo() {
+    Alert.alert(
+      'Deseja remover a tarefa?',
+      'Depois de remover, não sera possível reverter',
+      [
+        {
+          text: 'Sim',
+          onPress: () => onRemove(),
+        },
+        {
+          text: 'Não',
+          style: 'cancel',
+        },
+      ],
+    )
   }
 
   return (
@@ -32,7 +66,7 @@ export function Todo({ textTodo, onRemove, onCheck }: Props) {
           {textTodo}
         </Text>
       </View>
-      <TouchableOpacity onPress={onRemove}>
+      <TouchableOpacity onPress={removeTodo}>
         <Trash2 color="#808080" size={25} />
       </TouchableOpacity>
     </View>
